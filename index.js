@@ -21,6 +21,9 @@ const client = new MongoClient(uri, {
 async function run(){
     const projectCategoryCollection = client.db('portfolio').collection('projectCategories');
     const projectCollection = client.db('portfolio').collection('projects');
+    const bestProjectsCollection = client
+      .db("portfolio")
+      .collection("bestProjects");
     
     //get categories
     app.get('/categories', async(req, res)=> {
@@ -43,6 +46,12 @@ async function run(){
         const result = await projectCollection.find(query).sort({name: 1}).toArray();
         res.send(result);
     });
+    //get best project
+    app.get('/bestProjects', async(req, res)=> {
+        const query = {};
+        const result = await bestProjectsCollection.find(query).toArray();
+        res.send(result)
+    })
     //get all project
     app.get('/projects', async(req, res)=> {
         const query = {};
