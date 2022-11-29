@@ -25,7 +25,7 @@ async function run(){
     //get categories
     app.get('/categories', async(req, res)=> {
         const query = {};
-        const result = await projectCategoryCollection.find(query).toArray();
+        const result = await projectCategoryCollection.find(query).sort({name: -1}).toArray();
         res.send(result);
     });
     //create proejct
@@ -33,6 +33,21 @@ async function run(){
         const proejcts = req.body;
         const result = await projectCollection.insertOne(proejcts);
         res.send(result);
+    });
+    //get single category by product
+    app.get('/project/:id', async(req, res)=> {
+        const id = req.params.id;
+        const query = {
+          projectCategoryId: id
+        };
+        const result = await projectCollection.find(query).sort({name: 1}).toArray();
+        res.send(result);
+    });
+    //get all project
+    app.get('/projects', async(req, res)=> {
+        const query = {};
+        const result = await projectCollection.find(query).toArray();
+        res.send(result)
     })
 }
 
